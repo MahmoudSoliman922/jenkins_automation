@@ -40,9 +40,16 @@ The program will execute the Ruby script through Jenkins and process the output.
 ## Setup
 
 1. Ensure Go and Python are installed on your system.
-2. Install Playwright for Python: `pip install playwright`
-3. Install the required Go dependencies (if any).
-4. Configure Jenkins credentials and job details in the Python script.
+2. Install the required Python dependencies:
+   ```
+   pip install -r requirements.txt
+   ```
+3. Install Playwright browsers:
+   ```
+   playwright install
+   ```
+4. Install the required Go dependencies (if any).
+5. Configure Jenkins credentials and job details in the Python script.
 
 ## Note
 
