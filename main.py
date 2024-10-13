@@ -1,11 +1,33 @@
 import re
 import sys
 import os
-import requests
 import time
 import logging
-from playwright.sync_api import Playwright, sync_playwright
 from datetime import datetime
+
+def check_dependencies():
+    missing_modules = []
+    try:
+        import requests
+    except ImportError:
+        missing_modules.append("requests")
+    try:
+        from playwright.sync_api import Playwright, sync_playwright
+    except ImportError:
+        missing_modules.append("playwright")
+    
+    if missing_modules:
+        print("Error: The following required modules are missing:")
+        for module in missing_modules:
+            print(f"- {module}")
+        print("\nPlease install the missing modules using the following command:")
+        print("pip install " + " ".join(missing_modules))
+        sys.exit(1)
+
+check_dependencies()
+
+import requests
+from playwright.sync_api import Playwright, sync_playwright
 
 # Set up logging for ordinary logs to stdout
 ordinary_logger = logging.getLogger("ordinary")
