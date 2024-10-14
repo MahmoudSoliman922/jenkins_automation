@@ -12,7 +12,7 @@ import (
 )
 
 func runPythonScript(rubyScriptPath string) string {
-	cmd := exec.Command("python3", "main.py", rubyScriptPath)
+	cmd := exec.Command("python", "main.py", rubyScriptPath)
 
 	// Create separate pipes for ordinary logs and Jenkins output
 	ordinaryReader, ordinaryWriter := io.Pipe()

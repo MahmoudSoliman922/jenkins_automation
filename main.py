@@ -5,6 +5,40 @@ import time
 import logging
 from datetime import datetime
 
+# Add this dictionary at the top of the file, after the imports
+MODEL_MAPPER = {
+    "Booking": {
+        "pod": "prod-run-script-with-string",
+        "service_name": "sakani-beneficiaries-graphql",
+    },
+    "Beneficiary": {
+        "pod": "prod-run-script-with-string",
+        "service_name": "sakani-beneficiaries-graphql",
+    },
+    "TrackingPriceQuotation": {
+        "pod": "prod-run-script-with-string",
+        "service_name": "sakani-beneficiaries-graphql",
+    },
+    "AzmStoreClient": {
+        "pod": "prod-run-script-with-string",
+        "service_name": "sakani-main-intermediary",
+    },
+    "CompanyUser": {
+        "pod": "prod-run-script-with-string",
+        "service_name": "sakani-partners-service",
+    },
+    "Company": {
+        "pod": "prod-run-script-with-string",
+        "service_name": "sakani-partners-service",
+    },
+    "ProjectsData": {
+        "pod": "prod-run-script-with-string",
+        "service_name": "sakani-external-integrations-service",
+    },
+    # Add more models here as needed
+}
+
+
 def check_dependencies():
     missing_modules = []
     try:
@@ -15,7 +49,7 @@ def check_dependencies():
         from playwright.sync_api import Playwright, sync_playwright
     except ImportError:
         missing_modules.append("playwright")
-    
+
     if missing_modules:
         print("Error: The following required modules are missing:")
         for module in missing_modules:
@@ -23,6 +57,7 @@ def check_dependencies():
         print("\nPlease install the missing modules using the following command:")
         print("pip install " + " ".join(missing_modules))
         sys.exit(1)
+
 
 check_dependencies()
 
@@ -72,40 +107,6 @@ def get_last_pipeline_number(username, password, pod):
         sys.exit(1)
 
 
-# Add this dictionary at the top of the file, after the imports
-MODEL_MAPPER = {
-    "Booking": {
-        "pod": "prod-run-script-with-string",
-        "service_name": "sakani-beneficiaries-graphql",
-    },
-    "Beneficiary": {
-        "pod": "prod-run-script-with-string",
-        "service_name": "sakani-beneficiaries-graphql",
-    },
-    "TrackingPriceQuotation": {
-        "pod": "prod-run-script-with-string",
-        "service_name": "sakani-beneficiaries-graphql",
-    },
-    "AzmStoreClient": {
-        "pod": "prod-run-script-with-string",
-        "service_name": "sakani-main-intermediary",
-    },
-    "CompanyUser": {
-        "pod": "prod-run-script-with-string",
-        "service_name": "sakani-partners-service",
-    },
-    "Company": {
-        "pod": "prod-run-script-with-string",
-        "service_name": "sakani-partners-service",
-    },
-    "ProjectsData": {
-        "pod": "prod-run-script-with-string",
-        "service_name": "sakani-external-integrations-service",
-    },
-    # Add more models here as needed
-}
-
-
 # Function to extract task name, service name, server, and pod from the Ruby script
 def extract_from_ruby(ruby_file_path):
     ordinary_logger.info(f"Extracting information from Ruby script: {ruby_file_path}")
@@ -146,9 +147,9 @@ def extract_from_ruby(ruby_file_path):
         sys.exit(1)
 
 
-def run(playwright: Playwright, ruby_file_path, download_flag=False) -> None:
+def run(playwright: Playwright, ruby_file_path, download_flag=False) -> None:  # type: ignore
     ordinary_logger.info("Starting the Playwright script")
-    browser = playwright.chromium.launch(headless=True)
+    browser = playwright.chromium.launch(headless=False)
     context = browser.new_context()
     context.set_default_timeout(0)
 
